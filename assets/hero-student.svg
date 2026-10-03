@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 360">
+  <rect width="500" height="360" rx="30" fill="#e0f2fe"/>
+  <circle cx="250" cy="115" r="65" fill="#f8c9a7"/>
+  <path d="M185 110c8-66 121-78 132 0-26-20-61-26-132 0z" fill="#172554"/>
+  <path d="M165 300c5-87 43-123 85-123s80 36 85 123z" fill="#38bdf8"/>
+  <path d="M212 195l38 42 38-42" fill="white"/>
+  <rect x="318" y="72" width="120" height="76" rx="14" fill="white" stroke="#0ea5e9" stroke-width="4"/>
+  <text x="378" y="105" text-anchor="middle" font-family="Arial" font-size="17" fill="#0f172a">English</text>
+  <text x="378" y="128" text-anchor="middle" font-family="Arial" font-size="15" fill="#0ea5e9">is Easy!</text>
+</svg>

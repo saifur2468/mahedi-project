@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- পৃষ্ঠার মেটাডেটা ও ব্রাউজার ট্যাবের শিরোনাম -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#173f36" />
+    <meta
+      name="description"
+      content="English Sikho - প্রতিদিন অল্প অল্প করে ইংরেজি শিখুন, অনুশীলন করুন এবং নিজের অগ্রগতি দেখুন।"
+    />
+    <title>English Sikho | Learn a little, every day</title>
+
+    <!-- সাইটের আইকন, ফন্ট, UI লাইব্রেরি ও Tailwind CSS -->
+    <link rel="shortcut icon" href="./assets/logo.svg" type="image/svg+xml" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="./style/style.css" />
+
+    <!-- নিবন্ধিত account ID ছাড়া dashboard খোলা যাবে না -->
+    <script src="./script/auth.js"></script>
+    <script>
+      (async () => {
+        if (!window.EnglishSikhoAuth?.isConfigured()) {
+          window.location.replace("login.html?session=api");
+          return;
+        }
+
+        try {
+          const account = await window.EnglishSikhoAuth.getCurrentAccount();
+          if (!account) {
+            window.location.replace("login.html?session=invalid");
+            return;
+          }
+          localStorage.setItem("fullName", account.fullName);
+          localStorage.setItem("username", account.username);
+        } catch {
+          window.location.replace("login.html?session=invalid");
+        }
+      })();
+    </script>
+  </head>
+
+  <body>
+    <!-- সাইটের মূল নেভিগেশন ও মোবাইল মেনু -->
+    <header>
+      <div class="navbar site-nav px-4 md:px-8 flex justify-between">
+        <div class="navbar-start">
+          <a href="index.html" class="flex items-center gap-1">
+            <span class="brand-mark"><i class="fa-solid fa-language"></i></span>
+            <span class="brand-name"
+              >English <b>Sikho</b><small>ENGLISH, EVERY DAY</small></span
+            >
+          </a>
+        </div>
+
+        <div class="mobile-nav">
+          <button
+            type="button"
+            aria-label="Open navigation"
+            aria-expanded="false"
+            aria-controls="mobile-navigation"
+            class="grid size-10 place-items-center rounded border border-transparent bg-transparent text-lg text-[#173f36] transition hover:bg-[#e9eee4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64] lg:hidden"
+          >
+            <i class="fa-solid fa-bars text-lg"></i>
+          </button>
+          <ul id="mobile-navigation" class="mobile-nav-menu">
+            <li>
+              <a href="#faq"
+                ><i class="fa-solid fa-circle-question"></i> FAQ</a
+              >
+            </li>
+            <li>
+              <a href="#learn"><i class="fa-solid fa-book-open"></i> Learn</a>
+            </li>
+            <li>
+              <a href="#practice"
+                ><i class="fa-solid fa-brain"></i> Practice</a
+              >
+            </li>
+            <li>
+              <a href="#saved"
+                ><i class="fa-solid fa-bookmark"></i> Saved Words</a
+              >
+            </li>
+            <li>
+              <a href="#" onclick="logout(); return false;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> LogOut
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="hidden items-center lg:flex">
+          <ul class="flex items-center gap-1">
+            <li>
+              <a
+                href="#faq"
+                class="inline-flex min-h-10 items-center gap-2 rounded px-3 text-[13px] font-semibold text-[#45574c] transition hover:bg-[#e9eee4] hover:text-[#173f36] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+              >
+                <i class="fa-solid fa-circle-question"></i> FAQ
+              </a>
+            </li>
+            <li>
+              <a
+                href="#learn"
+                class="inline-flex min-h-10 items-center gap-2 rounded px-3 text-[13px] font-semibold text-[#45574c] transition hover:bg-[#e9eee4] hover:text-[#173f36] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+              >
+                <i class="fa-solid fa-book-open"></i> Learn
+              </a>
+            </li>
+            <li>
+              <a
+                href="#practice"
+                class="inline-flex min-h-10 items-center gap-2 rounded px-3 text-[13px] font-semibold text-[#45574c] transition hover:bg-[#e9eee4] hover:text-[#173f36] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+              >
+                <i class="fa-solid fa-brain"></i> Practice
+              </a>
+            </li>
+            <li>
+              <a
+                href="#saved"
+                class="inline-flex min-h-10 items-center gap-2 rounded px-3 text-[13px] font-semibold text-[#45574c] transition hover:bg-[#e9eee4] hover:text-[#173f36] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+              >
+                <i class="fa-solid fa-bookmark"></i> Saved Words
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                onclick="logout(); return false;"
+                class="inline-flex min-h-10 items-center gap-2 rounded border border-[#bac8bc] px-3 text-[13px] font-semibold text-[#173f36] transition hover:border-[#b7c7b8] hover:bg-[#eaf0e7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+              >
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> LogOut
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- স্বাগত বার্তা, শেখা শুরুর লিংক ও ধারাবাহিক শেখার দিনের সংখ্যা -->
+      <section class="hero-shell page-width" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="hero-kicker"><span></span> YOUR DAILY ENGLISH RITUAL</p>
+          <p class="font-bangla hero-welcome">
+            আবার স্বাগতম, <span id="learner-name">Learner</span>
+          </p>
+          <h1 id="hero-title">Small steps.<br /><em>Big fluency.</em></h1>
+          <p class="font-bangla hero-description">
+            প্রতিদিন একটু করে শিখুন। নতুন শব্দ, ছোট্ট অনুশীলন আর নিয়মিত চর্চায়
+            ইংরেজি হয়ে উঠুক আপনার নিজের ভাষা।
+          </p>
+          <div class="hero-actions">
+            <a
+              href="#learn"
+              class="inline-flex min-h-12 items-center justify-center gap-2 rounded border border-[#c5dc70] bg-[#d7ed83] px-5 text-sm font-bold text-[#20392d] shadow-sm transition hover:-translate-y-px hover:border-[#b7d05d] hover:bg-[#e6f4ad] hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+              ><i class="fa-solid fa-arrow-right"></i> আজকের শেখা শুরু করুন</a
+            >
+            <a href="#practice" class="hero-text-link"
+              >এক মিনিটের practice
+              <i class="fa-solid fa-arrow-up-right-from-square"></i
+            ></a>
+          </div>
+          <div class="hero-note">
+            <span class="avatar-stack"
+              ><i class="fa-solid fa-user"></i
+              ><i class="fa-solid fa-book-open"></i
+              ><i class="fa-solid fa-check"></i></span
+            ><span>নিজের গতিতে, নিজের মতো করে</span>
+          </div>
+        </div>
+        <div class="hero-art">
+          <div class="hero-art-orbit orbit-one"></div>
+          <div class="hero-art-orbit orbit-two"></div>
+          <img
+            src="./assets/hero-student.svg"
+            alt="A learner building a daily English habit"
+          />
+          <div class="floating-note">
+            <span class="note-icon"><i class="fa-solid fa-fire"></i></span
+            ><span
+              ><b id="streak-count">0</b> day streak<small
+                >KEEP IT GOING</small
+              ></span
+            >
+          </div>
+          <span class="art-caption">A LITTLE BETTER, EVERY DAY</span>
+        </div>
+        <span class="hero-index">01 <i></i> 06</span>
+      </section>
+
+      <!-- শেখা ও সংরক্ষিত শব্দের হিসাব এবং মোট অগ্রগতি -->
+      <section
+        class="progress-section page-width py-5"
+        aria-labelledby="progress-title"
+      >
+        <div
+          class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-4"
+        >
+          <div>
+            <p class="section-kicker">YOUR JOURNEY</p>
+            <h2 id="progress-title" class="text-2xl font-bold">
+              Learning snapshot
+            </h2>
+          </div>
+          <p class="font-bangla text-slate-500">প্রতিদিন অল্প অল্প করে শিখুন</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-icon stat-green"
+              ><i class="fa-solid fa-book-open"></i
+            ></span>
+            <div>
+              <p class="stat-label">Words mastered</p>
+              <p class="stat-value">
+                <span id="stat-learned">0</span
+                ><span class="text-sm font-normal text-slate-500">
+                  / <span id="stat-total">0</span></span
+                >
+              </p>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon stat-coral"
+              ><i class="fa-solid fa-bookmark"></i
+            ></span>
+            <div>
+              <p class="stat-label">Saved for review</p>
+              <p id="stat-saved" class="stat-value">0</p>
+            </div>
+          </div>
+          <div class="stat-item stat-progress">
+            <span class="stat-icon stat-lime"
+              ><i class="fa-solid fa-chart-line"></i
+            ></span>
+            <div class="progress-copy">
+              <p class="stat-label">Learning progress</p>
+              <div class="flex items-center gap-3 mt-2">
+                <progress
+                  id="learning-progress"
+                  class="progress w-full"
+                  value="0"
+                  max="100"
+                ></progress>
+                <span id="progress-label" class="text-sm font-semibold"
+                  >0%</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- আজকের শব্দ ও দৈনিক শেখার লক্ষ্য -->
+      <section
+        class="daily-section page-width my-8"
+        aria-labelledby="daily-title"
+      >
+        <div
+          class="flex flex-col md:flex-row md:items-center md:justify-between gap-5"
+        >
+          <div class="daily-word-copy">
+            <p class="section-kicker">A LITTLE PRACTICE, EVERY DAY</p>
+            <h2 id="daily-title" class="text-2xl font-bold mt-1">
+              Word of the day
+            </h2>
+            <p
+              id="daily-word"
+              class="text-3xl font-bold text-slate-900 mt-3"
+            ></p>
+            <p
+              id="daily-meaning"
+              class="font-bangla text-lg text-slate-700"
+            ></p>
+            <p id="daily-example" class="text-sm text-slate-500 mt-1"></p>
+          </div>
+          <div class="daily-side">
+            <div class="daily-goal">
+              <span class="goal-ring"><i class="fa-solid fa-bullseye"></i></span
+              ><span
+                ><b id="goal-count">0</b> / 5 words<small
+                  >YOUR DAILY GOAL</small
+                ></span
+              >
+            </div>
+            <button
+              id="daily-learned"
+              type="button"
+              class="inline-flex min-h-12 items-center justify-center gap-2 rounded border border-[#c5dc70] bg-[#d7ed83] px-5 text-sm font-bold text-[#20392d] shadow-sm transition hover:-translate-y-px hover:border-[#b7d05d] hover:bg-[#e6f4ad] hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64] disabled:cursor-not-allowed disabled:border-[#d8ded5] disabled:bg-[#e8ece5] disabled:text-[#68756a] disabled:opacity-100 md:self-center"
+            >
+              <i class="fa-solid fa-check"></i> Mark as learned
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- index.js-এর lesson data থেকে lesson button তৈরি হয় -->
+      <section id="learn" class="py-10">
+        <div class="section-heading">
+          <p class="section-kicker">BUILD YOUR VOCABULARY</p>
+          <h2 class="section-title">A word at a time.</h2>
+          <p class="font-bangla section-subtitle">
+            নিজের পছন্দের lesson বেছে নিয়ে শেখা শুরু করুন
+          </p>
+        </div>
+
+        <div
+          id="level-container"
+          class="lesson-list flex gap-3 flex-wrap justify-center px-4"
+        ></div>
+      </section>
+
+      <!-- শব্দ খোঁজার input ও search মুছে ফেলার button -->
+      <section class="search-section page-width flex justify-center px-4">
+        <div class="search-box">
+          <label class="search-input-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i
+            ><input
+              id="input-search"
+              type="text"
+              aria-label="Search English words or Bangla meanings"
+              placeholder="Search Vocabulary Now"
+              autocomplete="off" /><button
+              id="clear-search"
+              class="clear-search hidden size-[30px] shrink-0 place-items-center rounded-full bg-transparent text-[#69766e] transition hover:bg-[#eef2e9] hover:text-[#173f36] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+              type="button"
+              aria-label="Clear search"
+              title="Clear search"
+            >
+              <i class="fa-solid fa-xmark"></i></button></label
+          ><button
+            id="btn-search"
+            type="button"
+            class="inline-flex min-h-12 items-center justify-center gap-2 rounded border border-[#173f36] bg-[#173f36] px-5 text-xs font-bold text-white shadow-sm transition hover:-translate-y-px hover:border-[#27584b] hover:bg-[#27584b] hover:shadow-md active:translate-y-px active:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64] disabled:cursor-not-allowed disabled:border-[#d8ded5] disabled:bg-[#e8ece5] disabled:text-[#68756a]"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i><span>Search</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- শব্দ filter, ফলাফলের সংখ্যা ও এলোমেলো শব্দ দেখার button -->
+      <section
+        class="vocab-toolbar page-width"
+        aria-label="Vocabulary controls"
+      >
+        <div class="filter-group" role="group" aria-label="Filter vocabulary">
+          <button
+            type="button"
+            class="filter-button rounded border border-transparent bg-transparent px-3 py-2 text-xs font-semibold text-[#68756c] transition hover:bg-[#e9eee4] hover:text-[#173f36] aria-pressed:border-[#dce5d8] aria-pressed:bg-white aria-pressed:text-[#173f36] aria-pressed:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+            data-filter="all"
+            aria-pressed="true"
+          >
+            All words
+          </button>
+          <button
+            type="button"
+            class="filter-button rounded border border-transparent bg-transparent px-3 py-2 text-xs font-semibold text-[#68756c] transition hover:bg-[#e9eee4] hover:text-[#173f36] aria-pressed:border-[#dce5d8] aria-pressed:bg-white aria-pressed:text-[#173f36] aria-pressed:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+            data-filter="unlearned"
+            aria-pressed="false"
+          >
+            To learn
+          </button>
+          <button
+            type="button"
+            class="filter-button rounded border border-transparent bg-transparent px-3 py-2 text-xs font-semibold text-[#68756c] transition hover:bg-[#e9eee4] hover:text-[#173f36] aria-pressed:border-[#dce5d8] aria-pressed:bg-white aria-pressed:text-[#173f36] aria-pressed:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+            data-filter="saved"
+            aria-pressed="false"
+          >
+            Saved
+          </button>
+        </div>
+        <div class="results-tools">
+          <p id="results-count" aria-live="polite">0 words</p>
+          <button
+            id="random-word"
+            type="button"
+            class="inline-flex min-h-9 items-center gap-2 rounded border border-[#d9e1d6] bg-white px-3 text-[11px] font-bold text-[#173f36] transition hover:border-[#173f36] hover:bg-[#f3f7ed] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+          >
+            <i class="fa-solid fa-shuffle"></i> Surprise me
+          </button>
+        </div>
+      </section>
+
+      <!-- শব্দের ফলাফল প্রস্তুত হওয়ার সময় loading indicator -->
+      <section
+        id="spinner"
+        class="flex justify-center items-center py-10 hidden"
+      >
+        <span class="loading loading-bars loading-xl"></span>
+      </section>
+
+      <!-- নির্বাচিত lesson ও filter অনুযায়ী শব্দের card এখানে দেখানো হয় -->
+      <section
+        id="word-container"
+        class="word-grid page-width p-5 md:p-10 mx-auto my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+      >
+        <div
+          class="text-center bg-sky-100 col-span-full rounded-xl py-10 space-y-6 font-bangla"
+        >
+          <p class="text-xl font-medium text-gray-400">
+            আপনি এখনো কোন Lesson Select করেন নি
+          </p>
+          <h2 class="font-bold text-4xl">একটি Lesson Select করুন।</h2>
+        </div>
+      </section>
+
+      <!-- বহুনির্বাচনী quiz ও quiz-এর score -->
+      <section
+        id="practice"
+        class="w-11/12 mx-auto py-8 scroll-mt-6"
+        aria-labelledby="practice-title"
+      >
+        <div class="practice-layout">
+          <div class="practice-intro">
+            <p class="section-kicker">MAKE IT STICK</p>
+            <h2 id="practice-title" class="section-title">Quick practice</h2>
+            <p class="font-bangla section-subtitle">
+              মনে আছে তো? ছোট্ট quiz-এ যাচাই করে নিন।
+            </p>
+            <div class="score-chip">
+              <i class="fa-solid fa-trophy"></i
+              ><span
+                ><b id="quiz-score">0</b> correct
+                <small><span id="quiz-round">0</span> answered</small></span
+              >
+            </div>
+          </div>
+          <div class="quiz-panel">
+            <p class="text-sm text-slate-500">
+              Choose the correct Bangla meaning
+            </p>
+            <h3 id="quiz-word" class="text-2xl font-bold mt-2">
+              Ready for a quick question?
+            </h3>
+            <div id="quiz-options" class="grid sm:grid-cols-2 gap-3 mt-5"></div>
+            <p
+              id="quiz-feedback"
+              class="font-bangla mt-4 min-h-6"
+              aria-live="polite"
+            ></p>
+            <div class="flex gap-3 mt-3">
+              <button
+                id="quiz-start"
+                type="button"
+                class="inline-flex min-h-10 items-center justify-center gap-2 rounded border border-[#173f36] bg-[#173f36] px-4 text-xs font-bold text-white shadow-sm transition hover:-translate-y-px hover:border-[#27584b] hover:bg-[#27584b] hover:shadow-md active:translate-y-px active:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+              >
+                <i class="fa-solid fa-play"></i> Start practice
+              </button>
+              <button
+                id="quiz-next"
+                type="button"
+                class="hidden min-h-10 items-center justify-center gap-2 rounded border border-[#173f36] bg-white px-4 text-xs font-bold text-[#173f36] transition hover:bg-[#edf3e9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+              >
+                Next question <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- learner-এর review করার জন্য সংরক্ষিত শব্দের তালিকা -->
+      <section
+        id="saved"
+        class="w-11/12 mx-auto py-8 scroll-mt-6"
+        aria-labelledby="saved-title"
+      >
+        <div
+          class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-5"
+        >
+          <div>
+            <p class="section-kicker">YOUR PERSONAL REVIEW LIST</p>
+            <h2 id="saved-title" class="section-title">Saved words</h2>
+          </div>
+          <p class="font-bangla text-slate-500">
+            যে শব্দগুলো আবার দেখতে চান, সেগুলো এখানে পাবেন।
+          </p>
+        </div>
+        <div
+          id="saved-container"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+        ></div>
+      </section>
+
+      <!-- নির্বাচিত শব্দের অর্থ ও উদাহরণ দেখানোর dialog -->
+      <dialog id="word_modal" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+          <div id="details-container" class="space-y-5"></div>
+          <div class="modal-action">
+            <form method="dialog">
+              <button
+                class="inline-flex min-h-10 items-center justify-center rounded border border-[#d8e0d7] bg-[#f4f6f1] px-4 text-xs font-bold text-[#46564b] transition hover:border-[#b9c8bd] hover:bg-[#e9eee4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c1dd64]"
+              >
+                Close
+              </button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+
+      <!-- lesson ও শেখার অগ্রগতি নিয়ে সাধারণ প্রশ্নের উত্তর -->
+      <section id="faq" class="w-11/12 mx-auto pb-12 text-center">
+        <h2 class="text-3xl font-bold mb-4">FAQ</h2>
+        <div class="max-w-2xl mx-auto text-left space-y-2">
+          <details
+            class="collapse collapse-arrow border border-slate-200 bg-white"
+          >
+            <summary class="collapse-title font-semibold">
+              কীভাবে নতুন শব্দ শিখব?
+            </summary>
+            <p class="collapse-content font-bangla text-slate-600">
+              একটি lesson বেছে নিন, শব্দের অর্থ ও example পড়ুন, তারপর Quick
+              Practice দিয়ে নিজেকে যাচাই করুন।
+            </p>
+          </details>
+          <details
+            class="collapse collapse-arrow border border-slate-200 bg-white"
+          >
+            <summary class="collapse-title font-semibold">
+              Saved words কোথায় পাব?
+            </summary>
+            <p class="collapse-content font-bangla text-slate-600">
+              যেকোনো শব্দে Save for review চাপলে সেটি Saved Words অংশে যোগ হবে।
+            </p>
+          </details>
+          <details
+            class="collapse collapse-arrow border border-slate-200 bg-white"
+          >
+            <summary class="collapse-title font-semibold">
+              আমার শেখার অগ্রগতি কি থাকবে?
+            </summary>
+            <p class="collapse-content font-bangla text-slate-600">
+              এই demo-তে শেখা ও saved শব্দগুলো আপনার browser-এর local storage-এ
+              রাখা হয়।
+            </p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <script src="./script/index.js"></script>
+  </body>
+</html>
